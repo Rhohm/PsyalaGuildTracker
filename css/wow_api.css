@@ -1,0 +1,79 @@
+html, body, #page-content {
+    min-height:100%;
+}
+#page-content {
+    padding-top:90px;
+    background-color: #EFEFEF;
+}
+#keytable { 
+    padding-top: 5px;
+}
+#first-row {
+    padding-top:5px;
+}
+.current-view {
+padding-top:10px
+text-align:right;
+}
+.navigation-form {
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 0 auto;
+    text-align: center;
+    display:none;
+}
+.table {
+    border:2px solid white !important;
+    border-radius:8px;
+}
+.link {
+    
+}
+ th, tr, td {
+    background-color:white;
+}
+thead th{
+    background-color:black;
+    color:white;
+}
+thead th:first-child{
+    border-top-left-radius: 8px;
+}
+thead th:last-child{
+    border-top-right-radius: 8px;
+}
+.character-name {
+
+}
+.character-role {
+
+}
+.character-level {
+    width:10%;
+}
+.character-item-level {
+    width:10%;
+}
+.character-artifact-level {
+    width:12%;
+}
+.bad {
+    background-color: #ff4242 !important;
+    color:black;
+}
+.meh {
+    background-color: #ee9553 !important;
+    color:black;
+}
+.okay {
+    background-color: #ffff77 !important;
+    color:black;
+}
+.good {
+    background-color: #00cc66 !important;
+    color:black;
+}
+.hidden {
+    display:none;
+}
