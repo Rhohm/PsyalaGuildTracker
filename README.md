@@ -1,1 +1,2 @@
-# PsyalaGuildTracker
+# Psyala Guild Tracker
+Psyala Guild Tracker is a PHP / JavaScript based web application that will obtain the memebrs of a configured guild, and display information about them such as item level and artifact level.
