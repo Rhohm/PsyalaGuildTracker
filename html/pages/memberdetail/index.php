@@ -42,6 +42,9 @@
                     <div class="col-xs-12 text-center h1">Member Details</div>
                 </div>
                 <div class="row">
+                    <div class="col-xs-12 h4 text-center">Note: If character data doesn't load, such as item level, refresh the page to re-request the data.</div>
+                </div>
+                <div class="row">
                     <table class="table table-condensed table-bordered character-table">
                         <thead>
                             <tr>
@@ -153,7 +156,7 @@
 
                     var columnsDef = [{
                             "render": function (data, type, row, meta) {
-                                return '<a target="_blank" href="http://<?php echo $region ?>.battle.net/wow/en/character/<?php echo $realmName ?>/' + data + '/simple"" class="link">' + data + '</a>';
+                                return '<a target="_blank" href="http://<?php echo $region ?>.battle.net/wow/en/character/<?php echo $realmName ?>/' + data + '/simple"" class="link" title="Armoury Link">' + data + '</a>';
                             }
                         },
                         {

@@ -16,7 +16,7 @@
     </head>
     <body>
         <!-- Start Header -->
-		<?php require_once $_SERVER["DOCUMENT_ROOT"] . "/html/layout/header.php"; ?>
+        <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/html/layout/header.php"; ?>
         <!-- End Header -->
         <!-- Start Page Content -->
         <div id="page-content" class="container-fluid">
@@ -38,9 +38,9 @@
                         <input id="submit" type="submit" class="btn btn-primary" value="Submit"/>
                     </form>
                 </div>
-				<div id="first-row" class="row">
-					<div class="col-xs-12 text-center h1">Class Overview</div>
-				</div>
+                <div id="first-row" class="row">
+                    <div class="col-xs-12 text-center h1">Class Overview</div>
+                </div>
                 <div class="row">
                     <table class="table table-condensed table-bordered class-table">
                         <thead>
@@ -79,13 +79,13 @@
                     for (var i = 0; i < data.members.length; i++) {
                         var cclass = data.members[i].character.class;
                         var level = data.members[i].character.level;
-						var specName = "";
-						try {
-                                specName = data.members[i].character.spec.name;
-                                role = data.members[i].character.spec.role;
-                            } catch (ex) {
+                        var specName = "";
+                        try {
+                            specName = data.members[i].character.spec.name;
+                            role = data.members[i].character.spec.role;
+                        } catch (ex) {
 
-                            }
+                        }
                         if (level >= 100) {
                             if (cclass == "1") {
                                 cclass = "Warrior";
