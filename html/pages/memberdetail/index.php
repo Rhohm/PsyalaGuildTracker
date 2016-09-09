@@ -16,7 +16,7 @@
     </head>
     <body>
         <!-- Start Header -->
-		<?php require_once $_SERVER["DOCUMENT_ROOT"] . "/html/layout/header.php"; ?>
+        <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/html/layout/header.php"; ?>
         <!-- End Header -->
         <!-- Start Page Content -->
         <div id="page-content" class="container-fluid">
@@ -38,9 +38,9 @@
                         <input id="submit" type="submit" class="btn btn-primary" value="Submit"/>
                     </form>
                 </div>
-				<div id="first-row" class="row">
-					<div class="col-xs-12 text-center h1">Member Details</div>
-				</div>
+                <div id="first-row" class="row">
+                    <div class="col-xs-12 text-center h1">Member Details</div>
+                </div>
                 <div class="row">
                     <table class="table table-condensed table-bordered character-table">
                         <thead>
@@ -50,7 +50,7 @@
                                 <th class="character-role">Spec</th>
                                 <th class="character-role">Role</th>
                                 <th class="character-level">Level</th>
-                                <th class="character-item-level" title="Average Equipped Item Level">Item Level</th>
+                                <th class="character-item-level" title="Average Item Level">Item Level</th>
                                 <th class="character-artifact-level">Artifact Level</th>
                             </tr>
                         </thead>
@@ -62,16 +62,24 @@
         </div>
         <!--End Page Content -->
         <script>
-            function getItemLevel(name) {
+            function getItemLevel(name, specName) {
                 var ilvlRequest = "https://<?php echo $region ?>.api.battle.net/wow/character/<?php echo $realmName ?>/" + encodeURI(name) + "?fields=items&locale=en_GB&apikey=bjahzm89djw4wd4r6n8hnutmb6ygw4gn";
                 try {
                     $.getJSON(ilvlRequest, function (data) {
-                        var ilvl = data.items.averageItemLevelEquipped;
+                        var ilvl = data.items.averageItemLevel;
                         sessionStorage.setItem("itemLevel-" + name, ilvl);
                         var aLevel = 0;
-                        if (data.items.mainHand.artifactTraits != undefined) {
-                            for (var i = 0; i < data.items.mainHand.artifactTraits.length; i++) {
-                                aLevel = aLevel + data.items.mainHand.artifactTraits[i].rank;
+                        if (specName == "Protection") {
+                            if (data.items.offHand.artifactTraits !== undefined) {
+                                for (var i = 0; i < data.items.offHand.artifactTraits.length; i++) {
+                                    aLevel = aLevel + data.items.mainoffHandHand.artifactTraits[i].rank;
+                                }
+                            }
+                        } else {
+                            if (data.items.mainHand.artifactTraits !== undefined) {
+                                for (var i = 0; i < data.items.mainHand.artifactTraits.length; i++) {
+                                    aLevel = aLevel + data.items.mainHand.artifactTraits[i].rank;
+                                }
                             }
                         }
                         sessionStorage.setItem("artifactLevel-" + name, aLevel);
@@ -141,7 +149,7 @@
                             dataSet.push(charData);
                         }
                     }
-                    
+
 
                     var columnsDef = [{
                             "render": function (data, type, row, meta) {

@@ -19,14 +19,8 @@
         <!-- Start Page Content -->
         <div id="page-content" class="container-fluid">
             <div class="container">
-                <div class="row">
-
-                </div>
                 <div id="first-row" class="row">
-                    <div class="col-xs-12 text-center h1">Feedback</div>
-                </div>
-                <div class="row">
-                    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeUN33unXzPHjblsnNf5gl2_SXkMexb1_LkZK4-TEVXxzSRCQ/viewform?embedded=true" width="760" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+                    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeUN33unXzPHjblsnNf5gl2_SXkMexb1_LkZK4-TEVXxzSRCQ/viewform?embedded=true" width="100%" height="1150px" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
                 </div>
             </div>
         </div>
