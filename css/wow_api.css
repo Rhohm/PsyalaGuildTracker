@@ -12,8 +12,8 @@ html, body, #page-content {
     padding-top:5px;
 }
 .current-view {
-padding-top:10px;
-text-align:right;
+    padding-top:10px;
+    text-align:right;
 }
 .navigation-form {
     background-color: white;
@@ -28,9 +28,9 @@ text-align:right;
     border-radius:8px;
 }
 .link {
-    
+
 }
- th, tr, td {
+th, tr, td {
     background-color:white;
 }
 thead th{
