@@ -10,7 +10,7 @@ $guildName = $config["guild"];
 			<div class="col-xs-6">
 				<a class="navbar-brand" href="/">Psyala Guild Tracker</a>
 			</div>
-			<div class="col-xs-6 h4 current-view">
+			<div class="col-xs-6 h5 current-view">
 				Currently Viewing <?php echo $guildName . "@" . $realmName; ?>
 			</div>
 		</div>
@@ -19,7 +19,8 @@ $guildName = $config["guild"];
 				<div id="navbar">
 					<ul class="nav navbar-nav">
 						<li><a href="/">Class Overview</a></li>
-						<li><a href="/html/pages/detail.php">Member Detail</a></li>
+						<li><a href="/html/pages/memberdetail/">Member Detail</a></li>
+                                                <li><a href="/html/pages/feedback/">Feedback</a></li>
 					</ul>
 				</div>
 			</div>
