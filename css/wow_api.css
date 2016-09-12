@@ -15,6 +15,10 @@ html, body, #page-content {
     padding-top:10px;
     text-align:right;
 }
+#top-row {
+    text-align:center;
+    padding-top:20px;
+}
 .navigation-form {
     background-color: white;
     padding: 10px;
@@ -22,6 +26,9 @@ html, body, #page-content {
     margin: 0 auto;
     text-align: center;
     display:none;
+}
+.display-form {
+    display:inline-block;
 }
 .table {
     border:2px solid white !important;

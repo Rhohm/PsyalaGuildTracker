@@ -1,4 +1,0 @@
-AuthType Basic
-AuthName "Access to /html/layout"
-AuthUserFile /kunden/homepages/7/d646616654/htpasswd
-Require user admin

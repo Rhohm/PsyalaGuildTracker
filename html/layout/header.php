@@ -20,6 +20,7 @@ $guildName = $config["guild"];
 					<ul class="nav navbar-nav">
 						<li><a href="/">Class Overview</a></li>
 						<li><a href="/html/pages/memberdetail/">Member Detail</a></li>
+                                                <li><a href="/html/pages/rawcharacterdetail/">Raw Character Detail</a></li>
                                                 <li><a href="/html/pages/feedback/">Feedback</a></li>
 					</ul>
 				</div>

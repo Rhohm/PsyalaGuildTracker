@@ -23,6 +23,23 @@
             <div class="container">
                 <div class="row">
                     <form class="form-inline navigation-form">
+                        <?php
+                        if (empty($_GET["region"])) {
+                            $region = $config["region"];
+                        } else {
+                            $region = $_GET["region"];
+                        }
+                        if (empty($_GET["guildName"])) {
+                            $guildName = $config["guild"];
+                        } else {
+                            $guildName = $_GET["guildName"];
+                        }
+                        if (empty($_GET["realmName"])) {
+                            $realmName = $config["realm"];
+                        } else {
+                            $realmName = $_GET["realmName"];
+                        }
+                        ?>
                         <div class="form-group">
                             <label for="region">Region:</label>
                             <input id="region" name="region" type="text" class="form-control" value="<?php echo $region ?>"/>
