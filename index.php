@@ -254,7 +254,7 @@
                     classData[35] = ["Druid", druidCount[0][3], druidCount[1][3]];
 
                     $(".class-table").DataTable({
-                        "lengthMenu": [[50], [50]],
+                        "lengthMenu": [[-1], ["All"]],
                         data: classData
                     });
                 });
