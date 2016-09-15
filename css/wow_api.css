@@ -26,6 +26,7 @@ html, body, #page-content {
     margin: 0 auto;
     text-align: center;
     display:none;
+    margin-top: 15px;
 }
 .display-form {
     display:inline-block;

@@ -89,7 +89,7 @@
         <!--End Page Content -->
         <script>
             $(document).ready(function () {
-                main(false);
+                main();
             });
 
             function convertTime(timestamp) {
@@ -134,6 +134,7 @@
                         }
                         var lastModified = convertTime(data.lastModified);
                         var characterData = ilvl + "," + aLevel + "," + lastModified;
+                        sessionStorage.removeItem(name);
                         sessionStorage.setItem(name, characterData);
                     });
                 } catch (ex) {
@@ -141,7 +142,7 @@
                 }
             }
 
-            function main(reinit) {
+            function main() {
                 var region = <?php echo "\"" . $region . "\"" ?>;
                 var realm = <?php echo "\"" . $realmName . "\"" ?>;
                 var guild = <?php echo "\"" . $guildName . "\"" ?>;
@@ -155,7 +156,7 @@
                         var specName = "";
                         var role = "";
                         var level = data.members[i].character.level;
-                        if (level >= 100) {
+                        if (level >= 110) {
                             try {
                                 specName = data.members[i].character.spec.name;
                                 role = data.members[i].character.spec.role;

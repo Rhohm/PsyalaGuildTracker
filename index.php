@@ -103,7 +103,7 @@
                         } catch (ex) {
 
                         }
-                        if (level >= 100) {
+                        if (level >= 110) {
                             if (cclass == "1") {
                                 cclass = "Warrior";
                                 if (specName == warriorCount[0][0]) {
