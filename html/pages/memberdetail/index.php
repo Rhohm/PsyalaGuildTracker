@@ -59,7 +59,12 @@
                     <div class="col-xs-12 text-center h1">Member Details</div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-12 h4 text-center">Note: If character data doesn't load, such as item level, refresh the page to re-request the data.</div>
+                    <div class="col-xs-6 text-right h4 data-message">
+                        If character data doesn't load: 
+                    </div>
+                    <div class="col-xs-6 text-left">
+                        <button class="btn btn-default data-button" onclick="main()">Reload Data</button>
+                    </div>
                 </div>
                 <div class="row">
                     <table class="table table-condensed table-bordered character-table">
@@ -72,6 +77,7 @@
                                 <th class="character-level">Level</th>
                                 <th class="character-item-level" title="Average Item Level">Item Level</th>
                                 <th class="character-artifact-level">Artifact Level</th>
+                                <th>Last Modified</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -82,17 +88,41 @@
         </div>
         <!--End Page Content -->
         <script>
-            function getItemLevel(name, specName) {
+            $(document).ready(function () {
+                main(false);
+            });
+
+            function convertTime(timestamp) {
+                var a = new Date(timestamp);
+                var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                var year = a.getFullYear();
+                var month = months[a.getMonth()];
+                var date = a.getDate();
+                var hour = convertNo(a.getHours());
+                var min = convertNo(a.getMinutes());
+                var sec = convertNo(a.getSeconds());
+                var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+                return time;
+            }
+
+            function convertNo(number) {
+                if (number < 10) {
+                    return "0" + number;
+                } else {
+                    return number;
+                }
+            }
+
+            function getCharacterDetails(name, specName) {
                 var ilvlRequest = "https://<?php echo $region ?>.api.battle.net/wow/character/<?php echo $realmName ?>/" + encodeURI(name) + "?fields=items&locale=en_GB&apikey=bjahzm89djw4wd4r6n8hnutmb6ygw4gn";
                 try {
                     $.getJSON(ilvlRequest, function (data) {
                         var ilvl = data.items.averageItemLevel;
-                        sessionStorage.setItem("itemLevel-" + name, ilvl);
                         var aLevel = 0;
                         if (specName == "Protection") {
                             if (data.items.offHand.artifactTraits !== undefined) {
                                 for (var i = 0; i < data.items.offHand.artifactTraits.length; i++) {
-                                    aLevel = aLevel + data.items.mainoffHandHand.artifactTraits[i].rank;
+                                    aLevel = aLevel + data.items.offHand.artifactTraits[i].rank;
                                 }
                             }
                         } else {
@@ -102,14 +132,16 @@
                                 }
                             }
                         }
-                        sessionStorage.setItem("artifactLevel-" + name, aLevel);
+                        var lastModified = convertTime(data.lastModified);
+                        var characterData = ilvl + "," + aLevel + "," + lastModified;
+                        sessionStorage.setItem(name, characterData);
                     });
                 } catch (ex) {
 
                 }
             }
 
-            $(document).ready(function () {
+            function main(reinit) {
                 var region = <?php echo "\"" . $region . "\"" ?>;
                 var realm = <?php echo "\"" . $realmName . "\"" ?>;
                 var guild = <?php echo "\"" . $guildName . "\"" ?>;
@@ -156,16 +188,22 @@
                                 cclass = "Demon Hunter";
                             }
 
-                            getItemLevel(name);
+                            getCharacterDetails(name, specName);
                             var charData = new Array();
                             charData[0] = name;
                             charData[1] = cclass;
                             charData[2] = specName;
                             charData[3] = role;
                             charData[4] = level;
-                            charData[5] = sessionStorage.getItem("itemLevel-" + name);
-                            charData[6] = sessionStorage.getItem("artifactLevel-" + name);
-
+                            var characterData;
+                            try {
+                                characterData = sessionStorage.getItem(name).split(",");
+                            } catch (ex) {
+                                characterData = ["", "", ""];
+                            }
+                            charData[5] = characterData[0];
+                            charData[6] = characterData[1];
+                            charData[7] = characterData[2];
                             dataSet.push(charData);
                         }
                     }
@@ -205,16 +243,24 @@
                             "render": function (data, type, row, meta) {
                                 return data;
                             }
+                        },
+                        {
+                            "render": function (data, type, row, meta) {
+                                return data;
+                            }
                         }
                     ];
-
+                    
                     $(".character-table").DataTable({
                         "lengthMenu": [[20, 30, 40, 50, 100, -1], [20, 30, 40, 50, 100, "All"]],
                         data: dataSet,
-                        "columns": columnsDef
+                        "columns": columnsDef,
+                        destroy: true
                     });
+
                 });
-            });
+            }
+            ;
         </script>
     </body>
 </html>

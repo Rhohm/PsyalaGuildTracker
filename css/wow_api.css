@@ -84,3 +84,9 @@ thead th:last-child{
 .hidden {
     display:none;
 }
+.data-message {
+    margin-top:7px;
+}
+.data-button {
+    width: 250px;
+}
