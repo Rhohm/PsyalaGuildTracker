@@ -9,6 +9,7 @@
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="stylesheet" type="text/css" href="/js/bootstrap/dist/css/bootstrap.min.css"/>
         <link rel="stylesheet" type="text/css" href="/css/wow_api.css"/>
+        <link rel="stylesheet" type="text/css" href="/css/loader.css"/>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.12/fh-3.1.2/datatables.min.css"/>
         <script type="text/javascript" src="/js/jquery.min.js"></script>
         <script type="text/javascript" src="/js/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -56,6 +57,7 @@
                     </form>
                 </div>
                 <div id="first-row" class="row">
+                    <div class="loader"></div>
                     <div class="col-xs-12 text-center h1">Member Details</div>
                 </div>
                 <div class="row">
@@ -77,7 +79,7 @@
                                 <th class="character-level">Level</th>
                                 <th class="character-item-level" title="Average Item Level">Item Level</th>
                                 <th class="character-artifact-level">Artifact Level</th>
-                                <th>Last Modified</th>
+                                <th>Last Updated</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -88,9 +90,16 @@
         </div>
         <!--End Page Content -->
         <script>
+            var loader = $(".loader");
             $(document).ready(function () {
                 main();
             });
+
+            function sleep(ms) {
+                var unixtime_ms = new Date().getTime();
+                while (new Date().getTime() < unixtime_ms + ms) {
+                }
+            }
 
             function convertTime(timestamp) {
                 var a = new Date(timestamp);
@@ -143,6 +152,7 @@
             }
 
             function main() {
+                loader.show();
                 var region = <?php echo "\"" . $region . "\"" ?>;
                 var realm = <?php echo "\"" . $realmName . "\"" ?>;
                 var guild = <?php echo "\"" . $guildName . "\"" ?>;
@@ -252,6 +262,8 @@
                         }
                     ];
                     
+                    loader.hide();
+
                     $(".character-table").DataTable({
                         "lengthMenu": [[20, 30, 40, 50, 100, -1], [20, 30, 40, 50, 100, "All"]],
                         data: dataSet,

@@ -9,6 +9,7 @@
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="stylesheet" type="text/css" href="/js/bootstrap/dist/css/bootstrap.min.css"/>
         <link rel="stylesheet" type="text/css" href="/css/wow_api.css"/>
+        <link rel="stylesheet" type="text/css" href="/css/loader.css"/>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.12/fh-3.1.2/datatables.min.css"/>
         <script type="text/javascript" src="/js/jquery.min.js"></script>
         <script type="text/javascript" src="/js/bootstrap/dist/js/bootstrap.min.js"></script>

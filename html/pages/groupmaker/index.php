@@ -9,6 +9,7 @@
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="stylesheet" type="text/css" href="/js/bootstrap/dist/css/bootstrap.min.css"/>
         <link rel="stylesheet" type="text/css" href="/css/wow_api.css"/>
+        <link rel="stylesheet" type="text/css" href="/css/loader.css"/>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.12/fh-3.1.2/datatables.min.css"/>
         <script type="text/javascript" src="/js/jquery.min.js"></script>
         <script type="text/javascript" src="/js/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -136,7 +137,7 @@
                                 <th class="character-level">Level</th>
                                 <th class="character-item-level" title="Average Item Level">Item Level</th>
                                 <th class="character-artifact-level">Artifact Level</th>
-                                <th>Last Modified</th>
+                                <th>Last Updated</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -147,6 +148,7 @@
         </div>
         <!--End Page Content -->
         <script>
+            var loader = $(".loader");
             $(document).ready(function () {
                 var dataSet = [];
                 var region = <?php echo "\"" . $region . "\"" ?>;
@@ -250,6 +252,7 @@
             }
 
             function main() {
+                loader.show();
                 var dataSet = [];
                 var characters = ["<?php echo $c1 ?>", "<?php echo $c2 ?>", "<?php echo $c3 ?>", "<?php echo $c4 ?>", "<?php echo $c5 ?>"];
                 for (var i = 0; i < characters.length; i++) {
@@ -311,6 +314,8 @@
                         }
                     }
                 ];
+                
+                loader.hide();
 
                 $(".character-table").DataTable({
                     "lengthMenu": [[-1], ["All"]],
