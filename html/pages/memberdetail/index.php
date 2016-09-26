@@ -91,6 +91,7 @@
         <!--End Page Content -->
         <script>
             var loader = $(".loader");
+            var requestsSent = false;
             $(document).ready(function () {
                 main();
             });
@@ -128,17 +129,19 @@
                     $.getJSON(ilvlRequest, function (data) {
                         var ilvl = data.items.averageItemLevel;
                         var aLevel = 0;
-                        if (specName == "Protection") {
+                        if (specName == "Protection" || specName == "Demonology") {
                             if (data.items.offHand.artifactTraits !== undefined) {
                                 for (var i = 0; i < data.items.offHand.artifactTraits.length; i++) {
                                     aLevel = aLevel + data.items.offHand.artifactTraits[i].rank;
                                 }
+                                aLevel = aLevel - data.items.offHand.relics.length;
                             }
                         } else {
                             if (data.items.mainHand.artifactTraits !== undefined) {
                                 for (var i = 0; i < data.items.mainHand.artifactTraits.length; i++) {
                                     aLevel = aLevel + data.items.mainHand.artifactTraits[i].rank;
                                 }
+                                aLevel = aLevel - data.items.mainHand.relics.length;
                             }
                         }
                         var lastModified = convertTime(data.lastModified);
@@ -198,8 +201,10 @@
                             } else if (cclass == "12") {
                                 cclass = "Demon Hunter";
                             }
-
-                            getCharacterDetails(name, specName);
+                            if (requestsSent == false) {
+                                getCharacterDetails(name, specName);
+                                requestsSent = true;
+                            }
                             var charData = new Array();
                             charData[0] = name;
                             charData[1] = cclass;
@@ -247,12 +252,32 @@
                         },
                         {
                             "render": function (data, type, row, meta) {
-                                return data;
+                                var css = '';
+                                if (data >= 850) {
+                                    css = 'good';
+                                } else if (data >= 840) {
+                                    css = 'okay';
+                                } else if (data >= 820) {
+                                    css = 'meh';
+                                } else {
+                                    css = 'bad';
+                                }
+                                return '<a href="#" class="' + css + '">' + data + '</a>';
                             }
                         },
                         {
                             "render": function (data, type, row, meta) {
-                                return data;
+                                var css = '';
+                                if (data >= 20) {
+                                    css = 'good';
+                                } else if (data >= 17) {
+                                    css = 'okay';
+                                } else if (data >= 15) {
+                                    css = 'meh';
+                                } else {
+                                    css = 'bad';
+                                }
+                                return '<a href="#" class="' + css + '">' + data + '</a>';
                             }
                         },
                         {
@@ -261,7 +286,7 @@
                             }
                         }
                     ];
-                    
+
                     loader.hide();
 
                     $(".character-table").DataTable({

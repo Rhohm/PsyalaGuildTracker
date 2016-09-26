@@ -60,6 +60,18 @@
                     <div class="col-xs-12 text-center h1">Class Overview</div>
                 </div>
                 <div class="row">
+                    <table class="table table-condensed table-bordered total-table">
+                        <thead>
+                            <tr>
+                                <th>Total Players = Level 110</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
                     <table class="table table-condensed table-bordered class-table">
                         <thead>
                             <tr>
@@ -93,6 +105,7 @@
                     var monkCount = [["Windwalker", "Mistweaver", "Brewmaster"], [0, 0, 0]];
                     var druidCount = [["Balance", "Guardian", "Feral", "Restoration"], [0, 0, 0, 0]];
                     var dhCount = [["Vengeance", "Havoc"], [0, 0]];
+                    var totalCount = 0;
 
                     for (var i = 0; i < data.members.length; i++) {
                         var cclass = data.members[i].character.class;
@@ -105,6 +118,7 @@
 
                         }
                         if (level >= 110) {
+                            totalCount++;
                             if (cclass == "1") {
                                 cclass = "Warrior";
                                 if (specName == warriorCount[0][0]) {
@@ -258,6 +272,8 @@
                         "lengthMenu": [[-1], ["All"]],
                         data: classData
                     });
+                    
+                    $(".total-table tbody").append("<tr><td>" + totalCount + "</td></tr>");
                 });
             });
         </script>

@@ -149,6 +149,7 @@
         <!--End Page Content -->
         <script>
             var loader = $(".loader");
+            var requestsSent = false;
             $(document).ready(function () {
                 var dataSet = [];
                 var region = <?php echo "\"" . $region . "\"" ?>;
@@ -203,17 +204,19 @@
                         var aLevel = 0;
                         var specName = data.talents[0].spec.name;
                         var role = data.talents[0].spec.role;
-                        if (specName == "Protection") {
+                        if (specName == "Protection" || specName == "Demonology") {
                             if (data.items.offHand.artifactTraits !== undefined) {
                                 for (var i = 0; i < data.items.offHand.artifactTraits.length; i++) {
                                     aLevel = aLevel + data.items.offHand.artifactTraits[i].rank;
                                 }
+                                aLevel = aLevel - data.items.offHand.relics.length;
                             }
                         } else {
                             if (data.items.mainHand.artifactTraits !== undefined) {
                                 for (var i = 0; i < data.items.mainHand.artifactTraits.length; i++) {
                                     aLevel = aLevel + data.items.mainHand.artifactTraits[i].rank;
                                 }
+                                aLevel = aLevel - data.items.mainHand.relics.length;
                             }
                         }
                         if (cclass == "1") {
@@ -256,7 +259,10 @@
                 var dataSet = [];
                 var characters = ["<?php echo $c1 ?>", "<?php echo $c2 ?>", "<?php echo $c3 ?>", "<?php echo $c4 ?>", "<?php echo $c5 ?>"];
                 for (var i = 0; i < characters.length; i++) {
-                    getAllCharacterDetails(characters[i]);
+                    if (requestsSent == false) {
+                        requestsSent = true;
+                        getAllCharacterDetails(characters[i]);
+                    }
                     var characterData = ["", "", "", "", "", "", "", ""];
                     characterData[0] = characters[i];
                     try {
@@ -300,12 +306,32 @@
                     },
                     {
                         "render": function (data, type, row, meta) {
-                            return data;
+                            var css = '';
+                            if (data >= 850) {
+                                css = 'good';
+                            } else if (data >= 840) {
+                                css = 'okay';
+                            } else if (data >= 820) {
+                                css = 'meh';
+                            } else {
+                                css = 'bad';
+                            }
+                            return '<a href="#" class="' + css + '">' + data + '</a>';
                         }
                     },
                     {
                         "render": function (data, type, row, meta) {
-                            return data;
+                            var css = '';
+                            if (data >= 20) {
+                                css = 'good';
+                            } else if (data >= 17) {
+                                css = 'okay';
+                            } else if (data >= 15) {
+                                css = 'meh';
+                            } else {
+                                css = 'bad';
+                            }
+                            return '<a href="#" class="' + css + '">' + data + '</a>';
                         }
                     },
                     {
@@ -314,7 +340,7 @@
                         }
                     }
                 ];
-                
+
                 loader.hide();
 
                 $(".character-table").DataTable({

@@ -24,22 +24,22 @@
             <div class="container">
                 <div class="row" id="top-row">
                     <?php
-                        if (empty($_GET["region"])) {
-                            $region = $config["region"];
-                        } else {
-                            $region = $_GET["region"];
-                        }
-                        if (empty($_GET["character"])) {
-                            $character = $config["defaultCharacter"];
-                        } else {
-                            $character = $_GET["character"];
-                        }
-                        if (empty($_GET["realmName"])) {
-                            $realmName = $config["realm"];
-                        } else {
-                            $realmName = $_GET["realmName"];
-                        }
-                        ?>
+                    if (empty($_GET["region"])) {
+                        $region = $config["region"];
+                    } else {
+                        $region = $_GET["region"];
+                    }
+                    if (empty($_GET["character"])) {
+                        $character = $config["defaultCharacter"];
+                    } else {
+                        $character = $_GET["character"];
+                    }
+                    if (empty($_GET["realmName"])) {
+                        $realmName = $config["realm"];
+                    } else {
+                        $realmName = $_GET["realmName"];
+                    }
+                    ?>
                     <form class="form-inline navigation-form display-form">
                         <div class="form-group">
                             <label for="region">Region:</label>
@@ -60,17 +60,19 @@
                     <div class="col-xs-12 text-center h1">Raw Character Details</div>
                 </div>
                 <div class="row" id="json-area">
-                    
+
                 </div>
             </div>
         </div>
         <!--End Page Content -->
         <script>
+            var a;
             $(document).ready(function () {
                 var url = "https://<?php echo $region ?>.api.battle.net/wow/character/<?php echo $realmName ?>/<?php echo $character ?>?fields=items&locale=en_GB&apikey=bjahzm89djw4wd4r6n8hnutmb6ygw4gn";
                 try {
-                    $.getJSON(url, function(data) {
-                       $("#json-area").append("<pre>" + JSON.stringify(data, null, 4) + "</pre>");
+                    $.getJSON(url, function (data) {
+                        a = data;
+                        $("#json-area").append("<pre>" + JSON.stringify(data, null, 4) + "</pre>");
                     });
                 } catch (ex) {
                 }

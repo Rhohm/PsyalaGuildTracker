@@ -68,18 +68,23 @@ thead th:last-child{
 }
 .bad {
     background-color: #ff4242 !important;
-    color:black;
 }
 .meh {
     background-color: #ee9553 !important;
-    color:black;
 }
 .okay {
     background-color: #ffff77 !important;
-    color:black;
 }
 .good {
     background-color: #00cc66 !important;
+}
+.bad, .meh, .okay, .good {
+    display: block;
+    cursor:default;
+    color:black;
+}
+.bad:hover, .meh:hover, .okay:hover, .good:hover{
+    text-decoration: none;
     color:black;
 }
 .hidden {
