@@ -149,7 +149,6 @@
         <!--End Page Content -->
         <script>
             var loader = $(".loader");
-            var requestsSent = false;
             $(document).ready(function () {
                 var dataSet = [];
                 var region = <?php echo "\"" . $region . "\"" ?>;
@@ -259,10 +258,7 @@
                 var dataSet = [];
                 var characters = ["<?php echo $c1 ?>", "<?php echo $c2 ?>", "<?php echo $c3 ?>", "<?php echo $c4 ?>", "<?php echo $c5 ?>"];
                 for (var i = 0; i < characters.length; i++) {
-                    if (requestsSent == false) {
-                        requestsSent = true;
-                        getAllCharacterDetails(characters[i]);
-                    }
+                    getAllCharacterDetails(characters[i]);
                     var characterData = ["", "", "", "", "", "", "", ""];
                     characterData[0] = characters[i];
                     try {

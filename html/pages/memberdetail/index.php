@@ -91,7 +91,6 @@
         <!--End Page Content -->
         <script>
             var loader = $(".loader");
-            var requestsSent = false;
             $(document).ready(function () {
                 main();
             });
@@ -201,10 +200,7 @@
                             } else if (cclass == "12") {
                                 cclass = "Demon Hunter";
                             }
-                            if (requestsSent == false) {
-                                getCharacterDetails(name, specName);
-                                requestsSent = true;
-                            }
+                            getCharacterDetails(name, specName);
                             var charData = new Array();
                             charData[0] = name;
                             charData[1] = cclass;
