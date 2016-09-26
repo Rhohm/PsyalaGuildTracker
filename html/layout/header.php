@@ -23,6 +23,7 @@ $guildName = $config["guild"];
 						<li><a href="/html/pages/memberdetail/">Member Detail</a></li>
                                                 <li><a href="/html/pages/rawcharacterdetail/">Raw Character Detail</a></li>
                                                 <li><a href="/html/pages/feedback/">Feedback</a></li>
+                                                <li><a href="/logs/traffic.html/">Traffic</a></li>
 					</ul>
 				</div>
 			</div>
