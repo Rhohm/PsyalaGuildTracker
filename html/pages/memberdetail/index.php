@@ -166,12 +166,6 @@
                 var h = 0;
                 var m = 0;
                 for (var i = 0; i < raid.bosses.length; i++) {
-                    returnArray[0].push(raid.bosses[i].normalKills);
-                    returnArray[0].push(raid.bosses[i].name);
-                    returnArray[1].push(raid.bosses[i].heroicKills);
-                    returnArray[1].push(raid.bosses[i].name);
-                    returnArray[2].push(raid.bosses[i].mythicKills);
-                    returnArray[2].push(raid.bosses[i].name);
                     if (raid.bosses[i].normalKills > 0) {
                         n++;
                     }
@@ -185,11 +179,19 @@
                 returnArray[0].push(n);
                 returnArray[1].push(h);
                 returnArray[2].push(m);
+                for (var i = 0; i < raid.bosses.length; i++) {
+                    returnArray[0].push(raid.bosses[i].normalKills);
+                    returnArray[0].push(raid.bosses[i].name);
+                    returnArray[1].push(raid.bosses[i].heroicKills);
+                    returnArray[1].push(raid.bosses[i].name);
+                    returnArray[2].push(raid.bosses[i].mythicKills);
+                    returnArray[2].push(raid.bosses[i].name);
+                }
                 return returnArray;
             }
 
             function getRaidCell(data, raidName) {
-                var totKills = data[data.length - 1];
+                var totKills = data[0];
                 var css = '';
 
                 if (raidName === "Emerald Nightmare") {
@@ -205,12 +207,12 @@
                 }
 
                 var title = "";
-                for (var i = 0; i < (data.length - 1); i++) {
-                    if (i % 2 === 1) {
+                for (var i = 1; i < data.length; i++) {
+                    if (i % 2 === 0) {
                         title = title + data[i];
                     }
-                    if (i % 2 === 0) {
-                        if (i !== 0) {
+                    if (i % 2 === 1) {
+                        if (i !== 1) {
                             title = title + "\r\n";
                         }
                         title = title + data[i] + " x ";
@@ -281,9 +283,9 @@
                             }
                             charData[4] = characterData[0];
                             charData[5] = characterData[1];
-                            charData[6] = characterData[3];
-                            charData[7] = characterData[4];
-                            charData[8] = characterData[5];
+                            charData[6] = JSON.parse(characterData[3]);
+                            charData[7] = JSON.parse(characterData[4]);
+                            charData[8] = JSON.parse(characterData[5]);
                             charData[9] = characterData[2];
                             dataSet.push(charData);
                         }
@@ -342,19 +344,16 @@
                         },
                         {
                             "render": function (data, type, row, meta) {
-                                data = JSON.parse(data);
                                 return getRaidCell(data, "Emerald Nightmare");
                             }
                         },
                         {
                             "render": function (data, type, row, meta) {
-                                data = JSON.parse(data);
                                 return getRaidCell(data, "Emerald Nightmare");
                             }
                         },
                         {
                             "render": function (data, type, row, meta) {
-                                data = JSON.parse(data);
                                 return getRaidCell(data, "Emerald Nightmare");
                             }
                         },
