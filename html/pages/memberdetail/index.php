@@ -367,7 +367,7 @@
                     loader.hide();
 
                     $(".character-table").DataTable({
-                        "lengthMenu": [[20, 30, 40, 50, 100, -1], [20, 30, 40, 50, 100, "All"]],
+                        "lengthMenu": [[15, 30, 40, 50, 100, -1], [15, 30, 40, 50, 100, "All"]],
                         data: dataSet,
                         "columns": columnsDef,
                         destroy: true
