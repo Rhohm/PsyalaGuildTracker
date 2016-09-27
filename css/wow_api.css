@@ -84,12 +84,11 @@ thead th:last-child{
 .good {
     background-color: #00cc66 !important;
 }
-.bad, .meh, .okay, .good {
-    display: block;
+.bad a, .meh a, .okay a, .good a{
     cursor:default;
     color:black;
 }
-.bad:hover, .meh:hover, .okay:hover, .good:hover{
+.bad a:hover, .meh a:hover, .okay a:hover, .good a:hover{
     text-decoration: none;
     color:black;
 }

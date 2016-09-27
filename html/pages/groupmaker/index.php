@@ -170,6 +170,15 @@
                     $("#c5").typeahead({source: dataSet, items: 10});
                 });
                 main();
+                var i = 0;
+                var a = setInterval(function () {
+                    if (i === 1) {
+                        window.clearInterval(a);
+                    } else {
+                        main();
+                        i++;
+                    }
+                }, 1000);
             });
 
             function convertTime(timestamp) {
@@ -301,33 +310,41 @@
                         }
                     },
                     {
-                        "render": function (data, type, row, meta) {
+                        "createdCell": function (cell, cellData, rowData, rowIndex, colIndex) {
                             var css = '';
-                            if (data >= 850) {
+                            if (cellData >= 850) {
                                 css = 'good';
-                            } else if (data >= 840) {
+                            } else if (cellData >= 840) {
                                 css = 'okay';
-                            } else if (data >= 820) {
+                            } else if (cellData >= 820) {
                                 css = 'meh';
                             } else {
                                 css = 'bad';
                             }
-                            return '<a href="#" class="' + css + '">' + data + '</a>';
+                            $(cell).html('<a href="#" style="display:block">' + cellData + '</a>');
+                            $(cell).addClass(css);
+                        },
+                        "render": function (data, type, row, meta) {
+                            return data;
                         }
                     },
                     {
-                        "render": function (data, type, row, meta) {
+                        "createdCell": function (cell, cellData, rowData, rowIndex, colIndex) {
                             var css = '';
-                            if (data >= 20) {
+                            if (cellData >= 20) {
                                 css = 'good';
-                            } else if (data >= 17) {
+                            } else if (cellData >= 17) {
                                 css = 'okay';
-                            } else if (data >= 15) {
+                            } else if (cellData >= 15) {
                                 css = 'meh';
                             } else {
                                 css = 'bad';
                             }
-                            return '<a href="#" class="' + css + '">' + data + '</a>';
+                            $(cell).html('<a href="#" style="display:block">' + cellData + '</a>');
+                            $(cell).addClass(css);
+                        },
+                        "render": function (data, type, row, meta) {
+                            return data;
                         }
                     },
                     {
