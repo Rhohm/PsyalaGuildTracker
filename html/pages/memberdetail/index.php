@@ -343,16 +343,19 @@
                             }
                         },
                         {
+                            "sortable": false,
                             "render": function (data, type, row, meta) {
                                 return getRaidCell(data, "Emerald Nightmare");
                             }
                         },
                         {
+                            "sortable": false,
                             "render": function (data, type, row, meta) {
                                 return getRaidCell(data, "Emerald Nightmare");
                             }
                         },
                         {
+                            "sortable": false,
                             "render": function (data, type, row, meta) {
                                 return getRaidCell(data, "Emerald Nightmare");
                             }
