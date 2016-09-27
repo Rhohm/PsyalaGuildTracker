@@ -73,12 +73,14 @@
                         <thead>
                             <tr>
                                 <th class="character-name">Character</th>
-                                <th class="character-role">Class</th>
+                                <th class="character-class">Class</th>
                                 <th class="character-role">Spec</th>
                                 <th class="character-role">Role</th>
-                                <th class="character-level">Level</th>
                                 <th class="character-item-level" title="Average Item Level">Item Level</th>
                                 <th class="character-artifact-level">Artifact Level</th>
+                                <th class="raid-progress" title="Emerald Nightmare Normal">EM N</th>
+                                <th class="raid-progress" title="Emerald Nightmare Heroic">EM H</th>
+                                <th class="raid-progress" title="Emerald Nightmare Mythic">EM M</th>
                                 <th>Last Updated</th>
                             </tr>
                         </thead>
@@ -123,7 +125,7 @@
             }
 
             function getCharacterDetails(name, specName) {
-                var ilvlRequest = "https://<?php echo $region ?>.api.battle.net/wow/character/<?php echo $realmName ?>/" + encodeURI(name) + "?fields=items&locale=en_GB&apikey=bjahzm89djw4wd4r6n8hnutmb6ygw4gn";
+                var ilvlRequest = "https://<?php echo $region ?>.api.battle.net/wow/character/<?php echo $realmName ?>/" + encodeURI(name) + "?fields=items,progression&locale=en_GB&apikey=bjahzm89djw4wd4r6n8hnutmb6ygw4gn";
                 try {
                     $.getJSON(ilvlRequest, function (data) {
                         var ilvl = data.items.averageItemLevel;
@@ -143,14 +145,79 @@
                                 aLevel = aLevel - data.items.mainHand.relics.length;
                             }
                         }
+                        var emeraldNightmare = getBossKills(data.progression.raids[35]);
+                        var emeraldNightmareN = JSON.stringify(emeraldNightmare[0]);
+                        var emeraldNightmareH = JSON.stringify(emeraldNightmare[1])
+                        var emeraldNightmareM = JSON.stringify(emeraldNightmare[2]);
                         var lastModified = convertTime(data.lastModified);
-                        var characterData = ilvl + "," + aLevel + "," + lastModified;
+                        var characterData = ilvl + "|" + aLevel + "|" + lastModified + "|" + emeraldNightmareN + "|" + emeraldNightmareH + "|" + emeraldNightmareM;
+
                         sessionStorage.removeItem(name);
                         sessionStorage.setItem(name, characterData);
                     });
                 } catch (ex) {
 
                 }
+            }
+
+            function getBossKills(raid) {
+                var returnArray = [[], [], []];
+                var n = 0;
+                var h = 0;
+                var m = 0;
+                for (var i = 0; i < raid.bosses.length; i++) {
+                    returnArray[0].push(raid.bosses[i].normalKills);
+                    returnArray[0].push(raid.bosses[i].name);
+                    returnArray[1].push(raid.bosses[i].heroicKills);
+                    returnArray[1].push(raid.bosses[i].name);
+                    returnArray[2].push(raid.bosses[i].mythicKills);
+                    returnArray[2].push(raid.bosses[i].name);
+                    if (raid.bosses[i].normalKills > 0) {
+                        n++;
+                    }
+                    if (raid.bosses[i].heroicKills > 0) {
+                        h++;
+                    }
+                    if (raid.bosses[i].mythicKills > 0) {
+                        m++;
+                    }
+                }
+                returnArray[0].push(n);
+                returnArray[1].push(h);
+                returnArray[2].push(m);
+                return returnArray;
+            }
+
+            function getRaidCell(data, raidName) {
+                var totKills = data[data.length - 1];
+                var css = '';
+
+                if (raidName === "Emerald Nightmare") {
+                    if (totKills == 7) {
+                        css = 'good';
+                    } else if (totKills == 6) {
+                        css = 'okay';
+                    } else if (totKills > 0) {
+                        css = 'meh';
+                    } else {
+                        css = 'bad';
+                    }
+                }
+
+                var title = "";
+                for (var i = 0; i < (data.length - 1); i++) {
+                    if (i % 2 === 1) {
+                        title = title + data[i];
+                    }
+                    if (i % 2 === 0) {
+                        if (i !== 0) {
+                            title = title + "\r\n";
+                        }
+                        title = title + data[i] + " x ";
+                    }
+                }
+
+                return '<a href="#" class="' + css + '" title="' + title + '">' + totKills + '</a>';
             }
 
             function main() {
@@ -206,16 +273,18 @@
                             charData[1] = cclass;
                             charData[2] = specName;
                             charData[3] = role;
-                            charData[4] = level;
                             var characterData;
                             try {
-                                characterData = sessionStorage.getItem(name).split(",");
+                                characterData = sessionStorage.getItem(name).split("|");
                             } catch (ex) {
-                                characterData = ["", "", ""];
+
                             }
-                            charData[5] = characterData[0];
-                            charData[6] = characterData[1];
-                            charData[7] = characterData[2];
+                            charData[4] = characterData[0];
+                            charData[5] = characterData[1];
+                            charData[6] = characterData[3];
+                            charData[7] = characterData[4];
+                            charData[8] = characterData[5];
+                            charData[9] = characterData[2];
                             dataSet.push(charData);
                         }
                     }
@@ -224,11 +293,6 @@
                     var columnsDef = [{
                             "render": function (data, type, row, meta) {
                                 return '<a target="_blank" href="http://<?php echo $region ?>.battle.net/wow/en/character/<?php echo $realmName ?>/' + data + '/simple"" class="link" title="Armoury Link">' + data + '</a>';
-                            }
-                        },
-                        {
-                            "render": function (data, type, row, meta) {
-                                return data;
                             }
                         },
                         {
@@ -274,6 +338,24 @@
                                     css = 'bad';
                                 }
                                 return '<a href="#" class="' + css + '">' + data + '</a>';
+                            }
+                        },
+                        {
+                            "render": function (data, type, row, meta) {
+                                data = JSON.parse(data);
+                                return getRaidCell(data, "Emerald Nightmare");
+                            }
+                        },
+                        {
+                            "render": function (data, type, row, meta) {
+                                data = JSON.parse(data);
+                                return getRaidCell(data, "Emerald Nightmare");
+                            }
+                        },
+                        {
+                            "render": function (data, type, row, meta) {
+                                data = JSON.parse(data);
+                                return getRaidCell(data, "Emerald Nightmare");
                             }
                         },
                         {

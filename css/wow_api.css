@@ -54,17 +54,23 @@ thead th:last-child{
 .character-name {
 
 }
+.character-class {
+    width:85px;
+}
 .character-role {
-
+    width:60px;
 }
 .character-level {
     width:10%;
 }
 .character-item-level {
-    width:10%;
+    width:50px;
 }
 .character-artifact-level {
-    width:12%;
+    width:50px;
+}
+.raid-progress {
+    width:50px;
 }
 .bad {
     background-color: #ff4242 !important;
