@@ -39,19 +39,28 @@
                     } else {
                         $realmName = $_GET["realmName"];
                     }
+                    if (empty($_GET["p"])) {
+                        $params = "items";
+                    } else {
+                        $params = $_GET["p"];
+                    }
                     ?>
                     <form class="form-inline navigation-form display-form">
                         <div class="form-group">
                             <label for="region">Region:</label>
-                            <input id="region" name="region" type="text" class="form-control" value="<?php echo $region ?>"/>
+                            <input id="region" name="region" type="text" class="form-control" value="<?php echo $region ?>" required/>
                         </div>
                         <div class="form-group">
                             <label for="realm-name">Realm Name:</label>
-                            <input id="realm-name" name="realmName" type="text" class="form-control" value="<?php echo $realmName ?>"/>
+                            <input id="realm-name" name="realmName" type="text" class="form-control" value="<?php echo $realmName ?>" required/>
                         </div>
                         <div class="form-group">
                             <label for="guild-name">Character:</label>
-                            <input id="guild-name" name="character" type="text" class="form-control" value="<?php echo $character ?>"/>
+                            <input id="guild-name" name="character" type="text" class="form-control" value="<?php echo $character ?>" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="p">Parameters:</label>
+                            <input id="p" name="p" type="text" class="form-control" value="<?php echo $params ?>" required/>
                         </div>
                         <input id="submit" type="submit" class="btn btn-primary" value="Submit"/>
                     </form>
@@ -68,7 +77,7 @@
         <script>
             var a;
             $(document).ready(function () {
-                var url = "https://<?php echo $region ?>.api.battle.net/wow/character/<?php echo $realmName ?>/<?php echo $character ?>?fields=items&locale=en_GB&apikey=bjahzm89djw4wd4r6n8hnutmb6ygw4gn";
+                var url = "https://<?php echo $region ?>.api.battle.net/wow/character/<?php echo $realmName ?>/<?php echo $character ?>?fields=<?php echo $params ?>&locale=en_GB&apikey=bjahzm89djw4wd4r6n8hnutmb6ygw4gn";
                 try {
                     $.getJSON(url, function (data) {
                         a = data;
