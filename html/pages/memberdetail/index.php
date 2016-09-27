@@ -61,12 +61,12 @@
                     <div class="col-xs-12 text-center h1">Member Details</div>
                 </div>
                 <div class="row">
-                    <div class="col-xs-6 text-right h4 data-message">
+<!--                    <div class="col-xs-6 text-right h4 data-message">
                         If character data doesn't load: 
                     </div>
                     <div class="col-xs-6 text-left">
                         <button class="btn btn-default data-button" onclick="main()">Reload Data</button>
-                    </div>
+                    </div>-->
                 </div>
                 <div class="row">
                     <table class="table table-condensed table-bordered character-table">
@@ -97,12 +97,14 @@
                 main();
                 var i = 0;
                 var a = setInterval(function () {
-                    if (i === 1) {
+                    $(loader).show();
+                    if (i === 2) {
                         window.clearInterval(a);
                     } else {
                         main();
                         i++;
                     }
+                    $(loader).hide();
                 }, 2000);
             });
 
@@ -393,7 +395,7 @@
                     loader.hide();
 
                     $(".character-table").DataTable({
-                        "lengthMenu": [[15, 30, 40, 50, 100, -1], [15, 30, 40, 50, 100, "All"]],
+                        "lengthMenu": [[20, 30, 40, 50, 100, -1], [20, 30, 40, 50, 100, "All"]],
                         data: dataSet,
                         "columns": columnsDef,
                         destroy: true

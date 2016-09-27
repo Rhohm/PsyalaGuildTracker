@@ -118,14 +118,14 @@
                 <div id="first-row" class="row">
                     <div class="col-xs-12 text-center h1">Group Maker</div>
                 </div>
-                <div class="row">
+<!--                <div class="row">
                     <div class="col-xs-6 text-right h4 data-message">
                         If character data doesn't load: 
                     </div>
                     <div class="col-xs-6 text-left">
                         <button class="btn btn-default data-button" onclick="main()">Reload Data</button>
                     </div>
-                </div>
+                </div>-->
                 <div class="row">
                     <table class="table table-condensed table-bordered character-table">
                         <thead>
@@ -172,12 +172,14 @@
                 main();
                 var i = 0;
                 var a = setInterval(function () {
-                    if (i === 1) {
+                    $(loader).show();
+                    if (i === 2) {
                         window.clearInterval(a);
                     } else {
                         main();
                         i++;
                     }
+                    $(loader).hide();
                 }, 1000);
             });
 
