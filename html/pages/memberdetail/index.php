@@ -61,12 +61,12 @@
                     <div class="col-xs-12 text-center h1">Member Details</div>
                 </div>
                 <div class="row">
-                    <!--                    <div class="col-xs-6 text-right h4 data-message">
-                                            If character data doesn't load: 
-                                        </div>
-                                        <div class="col-xs-6 text-left">
-                                            <button class="btn btn-default data-button" onclick="main()">Reload Data</button>
-                                        </div>-->
+                    <div class="col-xs-6 text-right h4 data-message">
+                        If character data doesn't load properly: 
+                    </div>
+                    <div class="col-xs-6 text-left">
+                        <button class="btn btn-default data-button" onclick="main()">Reload Data</button>
+                    </div>
                 </div>
                 <div class="row">
                     <table class="table table-condensed table-bordered character-table">
@@ -93,19 +93,9 @@
         <!--End Page Content -->
         <script>
             var loader = $(".loader");
+            var plop = "";
             $(document).ready(function () {
                 main();
-                var i = 0;
-                var a = setInterval(function () {
-                    $(loader).show();
-                    if (i === 3) {
-                        window.clearInterval(a);
-                    } else {
-                        main();
-                        i++;
-                    }
-                    $(loader).hide();
-                }, 2000);
             });
 
             function sleep(ms) {

@@ -1,0 +1,76 @@
+html {
+    min-height:100%;
+}
+body, #page-content {
+    background-color:#373737;
+}
+.page-title {
+    color:white;
+}
+#last-content {
+    color: white;
+    bottom: 5px;
+    width: 100%;
+    position: fixed;
+    left: 0px;
+}
+
+/* KPI BOX */
+.kpi-box {
+    border: 2px solid white;
+    opacity: 0.8;
+    background-color:gainsboro;
+    height: 175px !important;
+    box-shadow: 0px 2px 5px grey;
+}
+.kpi-box .positive {
+    color:green;
+}
+.kpi-box .ok {
+    color:yellow;
+}
+.kpi-box .negative {
+    color:red;
+}
+.kpi-box .horde {
+    color:red;
+}
+.kpi-box .alliance {
+    color:skyblue;
+}
+.kpi-box .row .col-xs-6:first-child {
+    text-align:right;
+    font-weight:bold;
+}
+.kpi-box .row .col-xs-12.h4 {
+    font-weight:bold;
+}
+.kpi-box .row {
+    margin:0px;
+}
+
+/* Item Qualities */
+.item-poor {
+    color:#9d9d9d
+}
+.item-common {
+    color:#ffffff
+}
+.item-uncommon {
+    color:#1eff00
+}
+.item-rare {
+    color:#0070dd
+}
+.item-epic {
+    color:#a335ee
+}
+.item-legendary {
+    color:#ff8000
+}
+.item-artifact, .item-heirloom {
+    color:#e6cc80
+}
+.item-wowtoken {
+    color:#00ccff
+}

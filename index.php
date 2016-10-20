@@ -8,12 +8,13 @@
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         <link rel="stylesheet" type="text/css" href="/js/bootstrap/dist/css/bootstrap.min.css"/>
-        <link rel="stylesheet" type="text/css" href="/css/wow_api.css"/>
+        <link rel="stylesheet" type="text/css" href="/css/guild-tracker.css"/>
         <link rel="stylesheet" type="text/css" href="/css/loader.css"/>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.12/fh-3.1.2/datatables.min.css"/>
         <script type="text/javascript" src="/js/jquery.min.js"></script>
         <script type="text/javascript" src="/js/bootstrap/dist/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.12/fh-3.1.2/datatables.min.js"></script>
+        <script type="text/javascript" src="/js/utils.js"></script>
     </head>
     <body>
         <!-- Start Header -->
@@ -21,261 +22,292 @@
         <!-- End Header -->
         <!-- Start Page Content -->
         <div id="page-content" class="container-fluid">
-            <div class="container">
+            <div class="container-fluid">
+                <?php
+                if (empty($_GET["region"])) {
+                    $region = $config["region"];
+                } else {
+                    $region = $_GET["region"];
+                }
+                if (empty($_GET["guildName"])) {
+                    $guildName = $config["guild"];
+                } else {
+                    $guildName = $_GET["guildName"];
+                }
+                if (empty($_GET["realmName"])) {
+                    $realmName = $config["realm"];
+                } else {
+                    $realmName = $_GET["realmName"];
+                }
+                ?>
                 <div class="row">
-                    <form class="form-inline navigation-form">
-                        <?php
-                        if (empty($_GET["region"])) {
-                            $region = $config["region"];
-                        } else {
-                            $region = $_GET["region"];
-                        }
-                        if (empty($_GET["guildName"])) {
-                            $guildName = $config["guild"];
-                        } else {
-                            $guildName = $_GET["guildName"];
-                        }
-                        if (empty($_GET["realmName"])) {
-                            $realmName = $config["realm"];
-                        } else {
-                            $realmName = $_GET["realmName"];
-                        }
-                        ?>
-                        <div class="form-group">
-                            <label for="region">Region:</label>
-                            <input id="region" name="region" type="text" class="form-control" value="<?php echo $region ?>"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="realm-name">Realm Name:</label>
-                            <input id="realm-name" name="realmName" type="text" class="form-control" value="<?php echo $realmName ?>"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="guild-name">Guild Name:</label>
-                            <input id="guild-name" name="guildName" type="text" class="form-control" value="<?php echo $guildName ?>"/>
-                        </div>
-                        <input id="submit" type="submit" class="btn btn-primary" value="Submit"/>
-                    </form>
-                </div>
-                <div id="first-row" class="row">
-                    <div class="col-xs-12 text-center h1">Class Overview</div>
+                    <div class="col-xs-12 text-center h1 page-title"><?php echo strtoupper($guildName) ?></div>
                 </div>
                 <div class="row">
-                    <table class="table table-condensed table-bordered total-table">
-                        <thead>
-                            <tr>
-                                <th>Total Players = Level 110</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            
-                        </tbody>
-                    </table>
+                    <div class="col-xs-12 text-center h3 page-title"><?php echo strtoupper($realmName . "-" . $region) ?></div>
                 </div>
-                <div class="row">
-                    <table class="table table-condensed table-bordered class-table">
-                        <thead>
-                            <tr>
-                                <th>Class</th>
-                                <th>Spec</th>
-                                <th>Count</th>
-                            </tr>
-                        </thead>
-                    </table>
+                <div class="row kpi-container">
+                    <!-- REALM INFO KPI START -->
+                    <div class="col-md-4 col-xs-12">
+                        <div class="kpi-box" id="realm-info">
+                            <div class="row">
+                                <div class="col-xs-12 text-center h4">
+                                    REALM INFORMATION
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    Status:
+                                </div>
+                                <div class="col-xs-6" id="realm-info-status"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    Queue:
+                                </div>
+                                <div class="col-xs-6" id="realm-info-queue"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    Population:
+                                </div>
+                                <div class="col-xs-6" id="realm-info-population"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    Realm Type:
+                                </div>
+                                <div class="col-xs-6" id="realm-info-type"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    Connected Realms:
+                                </div>
+                                <div class="col-xs-6" id="realm-info-connected"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- REALM INFO KPI END -->
+                    <!-- GUILD INFO KPI START -->
+                    <div class="col-md-4 col-xs-12">
+                        <div class="kpi-box" id="guild-info">
+                            <div class="row">
+                                <div class="col-xs-12 text-center h4">
+                                    GUILD INFORMATION
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    Level:
+                                </div>
+                                <div class="col-xs-6" id="guild-info-level"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    Members:
+                                </div>
+                                <div class="col-xs-6" id="guild-info-members"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    Members @ 110:
+                                </div>
+                                <div class="col-xs-6" id="guild-info-members-oneten"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    Achievement Points:
+                                </div>
+                                <div class="col-xs-6" id="guild-info-achievement-points"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    Faction:
+                                </div>
+                                <div class="col-xs-6" id="guild-info-faction"></div>
+                            </div> 
+                        </div>
+                    </div>
+                    <!-- GUILD INFO KPI END -->
+                    <!-- GUILD NEWS KPI START -->
+                    <div class="col-md-4 col-xs-12">
+                        <div class="kpi-box" id="latest-news">
+                            <div class="row">
+                                <div class="col-xs-12 text-center h4">
+                                    Latest News
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12" id="latest-news-1"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12" id="latest-news-2"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12" id="latest-news-3"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12" id="latest-news-4"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12" id="latest-news-5"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- GUILD NEWS KPI END -->
+                </div>
+                <div class="row" id="last-content">
+                    <div class="col-xs-12 text-center">
+                        Last Update: <span id="last-update"></span>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="loader"></div>
         <!--End Page Content -->
         <script>
+            var region = "<?php echo $region ?>";
+            var guildName = "<?php echo $guildName ?>";
+            var realmName = "<?php echo $realmName ?>";
+            var a;
+
+            $.ajaxSetup({
+                async: false
+            });
 
             $(document).ready(function () {
-                var region = <?php echo "\"" . $region . "\"" ?>;
-                var realm = <?php echo "\"" . $realmName . "\"" ?>;
-                var guild = <?php echo "\"" . $guildName . "\"" ?>;
-                var requestURL = "https://" + region + ".api.battle.net/wow/guild/" + realm + "/" + guild + "?fields=members&locale=en_GB&apikey=bjahzm89djw4wd4r6n8hnutmb6ygw4gn";
-                $.getJSON(requestURL, function (data) {
-                    var warriorCount = [["Fury", "Protection", "Arms"], [0, 0, 0]];
-                    var paladinCount = [["Retribution", "Holy", "Protection"], [0, 0, 0]];
-                    var hunterCount = [["Marksmanship", "Survival", "Beast Mastery"], [0, 0, 0]];
-                    var rogueCount = [["Outlaw", "Subtlety", "Assassination"], [0, 0, 0]];
-                    var priestCount = [["Shadow", "Holy", "Discipline"], [0, 0, 0]];
-                    var dkCount = [["Blood", "Unholy", "Frost"], [0, 0, 0]];
-                    var shamanCount = [["Elemental", "Restoration", "Enhancement"], [0, 0, 0]];
-                    var mageCount = [["Fire", "Frost", "Arcane"], [0, 0, 0]];
-                    var warlockCount = [["Destruction", "Affliction", "Demonology"], [0, 0, 0]];
-                    var monkCount = [["Windwalker", "Mistweaver", "Brewmaster"], [0, 0, 0]];
-                    var druidCount = [["Balance", "Guardian", "Feral", "Restoration"], [0, 0, 0, 0]];
-                    var dhCount = [["Vengeance", "Havoc"], [0, 0]];
-                    var totalCount = 0;
+                $(".loader").show();
+                getRealmInformation();
+                getGuildInformation();
+                getLatestNews();
+                $(".loader").hide();
+            });
 
-                    for (var i = 0; i < data.members.length; i++) {
-                        var cclass = data.members[i].character.class;
-                        var level = data.members[i].character.level;
-                        var specName = "";
-                        try {
-                            specName = data.members[i].character.spec.name;
-                            role = data.members[i].character.spec.role;
-                        } catch (ex) {
-
+            function getItemInformation(itemID) {
+                var url = "https://eu.api.battle.net/wow/item/" + itemID + "?locale=en_GB&apikey=bjahzm89djw4wd4r6n8hnutmb6ygw4gn";
+                var item = "";
+                try {
+                    $.getJSON(url, function (data) {
+                        var quality;
+                        switch (data.quality) {
+                            case 0:
+                                quality = "item-poor";
+                                break;
+                            case 1:
+                                quality = "item-common";
+                                break;
+                            case 2:
+                                quality = "item-uncommon";
+                                break;
+                            case 3:
+                                quality = "item-rare";
+                                break;
+                            case 4:
+                                quality = "item-epic";
+                                break;
+                            case 5:
+                                quality = "item-legendary";
+                                break;
+                            case 6:
+                                quality = "item-artifact";
+                                break;
+                            case 7:
+                                quality = "item-heirloom";
+                                break;
+                            case 8:
+                                quality = "item-wowtoken";
+                                break;
                         }
-                        if (level >= 110) {
-                            totalCount++;
-                            if (cclass == "1") {
-                                cclass = "Warrior";
-                                if (specName == warriorCount[0][0]) {
-                                    warriorCount[1][0]++;
-                                } else if (specName == warriorCount[0][1]) {
-                                    warriorCount[1][1]++;
-                                } else if (specName == warriorCount[0][2]) {
-                                    warriorCount[1][2]++;
-                                }
-                            } else if (cclass == "2") {
-                                cclass = "Paladin";
-                                if (specName == paladinCount[0][0]) {
-                                    paladinCount[1][0]++;
-                                } else if (specName == paladinCount[0][1]) {
-                                    paladinCount[1][1]++;
-                                } else if (specName == paladinCount[0][2]) {
-                                    paladinCount[1][2]++;
-                                }
-                            } else if (cclass == "3") {
-                                cclass = "Hunter";
-                                if (specName == hunterCount[0][0]) {
-                                    hunterCount[1][0]++;
-                                } else if (specName == hunterCount[0][1]) {
-                                    hunterCount[1][1]++;
-                                } else if (specName == hunterCount[0][2]) {
-                                    hunterCount[1][2]++;
-                                }
-                            } else if (cclass == "4") {
-                                cclass = "Rogue";
-                                if (specName == rogueCount[0][0]) {
-                                    rogueCount[1][0]++;
-                                } else if (specName == rogueCount[0][1]) {
-                                    rogueCount[1][1]++;
-                                } else if (specName == rogueCount[0][2]) {
-                                    rogueCount[1][2]++;
-                                }
-                            } else if (cclass == "5") {
-                                cclass = "Priest";
-                                if (specName == priestCount[0][0]) {
-                                    priestCount[1][0]++;
-                                } else if (specName == priestCount[0][1]) {
-                                    priestCount[1][1]++;
-                                } else if (specName == priestCount[0][2]) {
-                                    priestCount[1][2]++;
-                                }
-                            } else if (cclass == "6") {
-                                cclass = "Death Knight";
-                                if (specName == dkCount[0][0]) {
-                                    dkCount[1][0]++;
-                                } else if (specName == dkCount[0][1]) {
-                                    dkCount[1][1]++;
-                                } else if (specName == dkCount[0][2]) {
-                                    dkCount[1][2]++;
-                                }
-                            } else if (cclass == "7") {
-                                cclass = "Shaman";
-                                if (specName == shamanCount[0][0]) {
-                                    shamanCount[1][0]++;
-                                } else if (specName == shamanCount[0][1]) {
-                                    shamanCount[1][1]++;
-                                } else if (specName == shamanCount[0][2]) {
-                                    shamanCount[1][2]++;
-                                }
-                            } else if (cclass == "8") {
-                                cclass = "Mage";
-                                if (specName == mageCount[0][0]) {
-                                    mageCount[1][0]++;
-                                } else if (specName == mageCount[0][1]) {
-                                    mageCount[1][1]++;
-                                } else if (specName == mageCount[0][2]) {
-                                    mageCount[1][2]++;
-                                }
-                            } else if (cclass == "9") {
-                                cclass = "Warlock";
-                                if (specName == warlockCount[0][0]) {
-                                    warlockCount[1][0]++;
-                                } else if (specName == warlockCount[0][1]) {
-                                    warlockCount[1][1]++;
-                                } else if (specName == warlockCount[0][2]) {
-                                    warlockCount[1][2]++;
-                                }
-                            } else if (cclass == "10") {
-                                cclass = "Monk";
-                                if (specName == monkCount[0][0]) {
-                                    monkCount[1][0]++;
-                                } else if (specName == monkCount[0][1]) {
-                                    monkCount[1][1]++;
-                                } else if (specName == monkCount[0][2]) {
-                                    monkCount[1][2]++;
-                                }
-                            } else if (cclass == "11") {
-                                cclass = "Druid";
-                                if (specName == druidCount[0][0]) {
-                                    druidCount[1][0]++;
-                                } else if (specName == druidCount[0][1]) {
-                                    druidCount[1][1]++;
-                                } else if (specName == druidCount[0][2]) {
-                                    druidCount[1][2]++;
-                                } else if (specName == druidCount[0][3]) {
-                                    druidCount[1][3]++;
-                                }
-                            } else if (cclass == "12") {
-                                cclass = "Demon Hunter";
-                                if (specName == dhCount[0][0]) {
-                                    dhCount[1][0]++;
-                                } else if (specName == dhCount[0][1]) {
-                                    dhCount[1][1]++;
-                                }
+                        item = "<a target='_blank' href='http://www.wowhead.com/item=" + itemID + "' class='" + quality + "'> " + data.name + " : " + data.itemLevel + "</a>";
+                    });
+                } catch (ex) {
+                    console.error(ex);
+                }
+                return item;
+            }
+
+            function getLatestNews() {
+                var url = "https://" + region + ".api.battle.net/wow/guild/" + realmName + "/" + guildName + "?fields=news&locale=en_GB&apikey=bjahzm89djw4wd4r6n8hnutmb6ygw4gn";
+                try {
+                    $.getJSON(url, function (data) {
+                        var newsCount = 1;
+                        for (var i = 0; i < data.news.length; i++) {
+                            var news = data.news[i];
+                            if (news.itemId != undefined && newsCount < 6) {
+                                var newsData = "<span style='font-weight:bold'>" + news.character + "</span> received " + getItemInformation(news.itemId);
+                                $("#latest-news-" + newsCount).html(newsData);
+                                newsCount++;
                             }
                         }
-                    }
-                    var classData = [];
-                    classData[0] = ["Warrior", warriorCount[0][0], warriorCount[1][0]];
-                    classData[1] = ["Warrior", warriorCount[0][1], warriorCount[1][1]];
-                    classData[2] = ["Warrior", warriorCount[0][2], warriorCount[1][2]];
-                    classData[3] = ["Paladin", paladinCount[0][0], paladinCount[1][0]];
-                    classData[4] = ["Paladin", paladinCount[0][1], paladinCount[1][1]];
-                    classData[5] = ["Paladin", paladinCount[0][2], paladinCount[1][2]];
-                    classData[6] = ["Hunter", hunterCount[0][0], hunterCount[1][0]];
-                    classData[7] = ["Hunter", hunterCount[0][1], hunterCount[1][1]];
-                    classData[8] = ["Hunter", hunterCount[0][2], hunterCount[1][2]];
-                    classData[9] = ["Rogue", rogueCount[0][0], rogueCount[1][0]];
-                    classData[10] = ["Rogue", rogueCount[0][1], rogueCount[1][1]];
-                    classData[11] = ["Rogue", rogueCount[0][2], rogueCount[1][2]];
-                    classData[12] = ["Priest", priestCount[0][0], priestCount[1][0]];
-                    classData[13] = ["Priest", priestCount[0][1], priestCount[1][1]];
-                    classData[14] = ["Priest", priestCount[0][2], priestCount[1][2]];
-                    classData[15] = ["Death Knight", dkCount[0][0], dkCount[1][0]];
-                    classData[16] = ["Death Knight", dkCount[0][1], dkCount[1][1]];
-                    classData[17] = ["Death Knight", dkCount[0][2], dkCount[1][2]];
-                    classData[18] = ["Shaman", shamanCount[0][0], shamanCount[1][0]];
-                    classData[19] = ["Shaman", shamanCount[0][1], shamanCount[1][1]];
-                    classData[20] = ["Shaman", shamanCount[0][2], shamanCount[1][2]];
-                    classData[21] = ["Mage", mageCount[0][0], mageCount[1][0]];
-                    classData[22] = ["Mage", mageCount[0][1], mageCount[1][1]];
-                    classData[23] = ["Mage", mageCount[0][2], mageCount[1][2]];
-                    classData[24] = ["Warlock", warlockCount[0][0], warlockCount[1][0]];
-                    classData[25] = ["Warlock", warlockCount[0][1], warlockCount[1][1]];
-                    classData[26] = ["Warlock", warlockCount[0][2], warlockCount[1][2]];
-                    classData[27] = ["Monk", monkCount[0][0], monkCount[1][0]];
-                    classData[28] = ["Monk", monkCount[0][1], monkCount[1][1]];
-                    classData[29] = ["Monk", monkCount[0][2], monkCount[1][2]];
-                    classData[30] = ["Demon Hunter", dhCount[0][0], dhCount[1][0]];
-                    classData[31] = ["Demon Hunter", dhCount[0][1], dhCount[1][1]];
-                    classData[32] = ["Druid", druidCount[0][0], druidCount[1][0]];
-                    classData[33] = ["Druid", druidCount[0][1], druidCount[1][1]];
-                    classData[34] = ["Druid", druidCount[0][2], druidCount[1][2]];
-                    classData[35] = ["Druid", druidCount[0][3], druidCount[1][3]];
-
-                    $(".class-table").DataTable({
-                        "lengthMenu": [[-1], ["All"]],
-                        data: classData
                     });
-                    
-                    $(".total-table tbody").append("<tr><td>" + totalCount + "</td></tr>");
-                });
-            });
+                } catch (ex) {
+                    console.error(ex);
+                }
+            }
+
+            function getGuildInformation() {
+                var url = "https://" + region + ".api.battle.net/wow/guild/" + realmName + "/" + guildName + "?fields=members&locale=en_GB&apikey=bjahzm89djw4wd4r6n8hnutmb6ygw4gn";
+                try {
+                    $.getJSON(url, function (data) {
+                        $("#guild-info-level").text(data.level);
+                        $("#guild-info-members").text(data.members.length);
+                        var membersoneten = 0;
+                        for (var i = 0; i < data.members.length; i++) {
+                            if (data.members[i].character.level == 110) {
+                                membersoneten++;
+                            }
+                        }
+                        $("#guild-info-members-oneten").text(membersoneten);
+                        $("#guild-info-achievement-points").text(data.achievementPoints);
+                        $("#guild-info-faction").html(data.side == 1 ? "<span class='horde'>Horde</span>" : "<span class='alliance'>Alliance</span>;");
+                        $("#last-update").text(convertTime(data.lastModified));
+                    });
+                } catch (ex) {
+                    console.error(ex);
+                }
+            }
+
+            function getRealmInformation() {
+                var url = "https://" + region + ".api.battle.net/wow/realm/status?locale=en_GB&apikey=bjahzm89djw4wd4r6n8hnutmb6ygw4gn";
+                try {
+                    $.getJSON(url, function (data) {
+                        for (var i = 0; i < data.realms.length; i++) {
+                            var realm = data.realms[i];
+                            if (realm.name === realmName) {
+                                $("#realm-info-status").html(realm.status == true ? "<span class='positive'>Online</span>" : "<span class='negative'>Offline</span>");
+                                $("#realm-info-queue").html(realm.queue == false ? "<span class='positive'>No</span>" : "<span class='negative'>Yes</span>");
+                                $("#realm-info-type").text(realm.type.toUpperCase());
+                                var population = realm.population;
+                                switch (population) {
+                                    case "high":
+                                        population = "<span class='negative'>High</span>";
+                                        break;
+                                    case "medium":
+                                        population = "<span class='ok'>Medium</span>";
+                                        break;
+                                    case "low":
+                                        population = "<span class='positive'>Low</span>";
+                                        break;
+                                }
+                                $("#realm-info-population").html(population);
+                                var connectedRealms = "None";
+                                for (var j = 0; j < realm.connected_realms.length; j++) {
+                                    if (realm.connected_realms[j].capitalize() !== realmName) {
+                                        if (j !== realm.connected_realms.length - 1) {
+                                            connectedRealms = connectedRealms + realm.connected_realms[j].capitalize() + ",";
+                                        } else {
+                                            connectedRealms = connectedRealms + realm.connected_realms[j].capitalize();
+                                        }
+                                    }
+                                }
+                                $("#realm-info-connected").text(connectedRealms);
+                            }
+                        }
+                    });
+                } catch (ex) {
+                    console.error(ex);
+                }
+            }
         </script>
     </body>
 </html>
