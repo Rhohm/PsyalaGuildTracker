@@ -92,6 +92,10 @@ thead th:last-child{
     text-decoration: none;
     color:black;
 }
+.raid-progress-cell, .raid-progress-cell:hover {
+    display:block;
+    text-align:center;
+}
 .hidden {
     display:none;
 }

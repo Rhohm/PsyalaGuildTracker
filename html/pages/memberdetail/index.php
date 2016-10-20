@@ -61,12 +61,12 @@
                     <div class="col-xs-12 text-center h1">Member Details</div>
                 </div>
                 <div class="row">
-<!--                    <div class="col-xs-6 text-right h4 data-message">
-                        If character data doesn't load: 
-                    </div>
-                    <div class="col-xs-6 text-left">
-                        <button class="btn btn-default data-button" onclick="main()">Reload Data</button>
-                    </div>-->
+                    <!--                    <div class="col-xs-6 text-right h4 data-message">
+                                            If character data doesn't load: 
+                                        </div>
+                                        <div class="col-xs-6 text-left">
+                                            <button class="btn btn-default data-button" onclick="main()">Reload Data</button>
+                                        </div>-->
                 </div>
                 <div class="row">
                     <table class="table table-condensed table-bordered character-table">
@@ -98,7 +98,7 @@
                 var i = 0;
                 var a = setInterval(function () {
                     $(loader).show();
-                    if (i === 2) {
+                    if (i === 3) {
                         window.clearInterval(a);
                     } else {
                         main();
@@ -229,7 +229,7 @@
                         title = title + data[i] + " x ";
                     }
                 }
-                $(cell).html('<a href="#" style="display:block;" title="' + title + '">' + totKills + '</a>');
+                $(cell).html('<a href="#" class="raid-progress-cell" style="display:block;" title="' + title + '">' + totKills + '</a>');
                 $(cell).addClass(css);
             }
 
