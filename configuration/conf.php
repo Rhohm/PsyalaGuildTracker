@@ -1,6 +1,6 @@
 <?php
 	$config["region"] = "eu";
 	$config["realm"] = "Ragnaros";
-	$config["guild"] = "Zeal";
-        $config["defaultCharacter"] = "Psyala";
+	$config["guild"] = "Karazan Chess Teeam";
+    $config["defaultCharacter"] = "Psyala";
 ?>
