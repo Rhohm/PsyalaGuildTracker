@@ -49,6 +49,50 @@ body, #page-content {
     margin:0px;
 }
 
+/* KPI TABLE BOX */
+.kpi-table-box {
+    border: 2px solid white;
+    opacity: 0.8;
+    background-color:gainsboro;
+    box-shadow: 0px 2px 5px grey;
+    margin-right:15px;
+    margin-left:15px;
+    margin-top:15px;
+}
+.kpi-table-box .table{
+    
+}
+.kpi-table-box .table td, .kpi-table-box .table th {
+    border:2px solid #373737;
+}
+.bad {
+    background-color: #ff4242 !important;
+}
+.meh {
+    background-color: #ee9553 !important;
+}
+.okay {
+    background-color: #ffff77 !important;
+}
+.good {
+    background-color: #00cc66 !important;
+}
+.bad a, .meh a, .okay a, .good a{
+    cursor:default;
+    color:black;
+}
+.bad a:hover, .meh a:hover, .okay a:hover, .good a:hover{
+    text-decoration: none;
+    color:black;
+}
+.raid-progress-cell, .raid-progress-cell:hover {
+    display:block;
+    text-align:center;
+}
+.hidden {
+    display:none;
+}
+
 /* Item Qualities */
 .item-poor {
     color:#9d9d9d

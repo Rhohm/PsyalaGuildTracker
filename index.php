@@ -156,6 +156,27 @@
                     </div>
                     <!-- GUILD NEWS KPI END -->
                 </div>
+                <div class="row">
+                    <div class="kpi-table-box">
+                        <table class="table table-condensed table-bordered" id="member-table">
+                            <thead>
+                                <tr>
+                                    <th>Character</th>
+                                    <th>Class</th>
+                                    <th>Spec</th>
+                                    <th>Role</th>
+                                    <th title="Average Item Level (inc Bags)">Item Level</th>
+                                    <th>Artifact Level</th>
+                                    <th title="Emerald Nightmare - Normal Progression">EM N</th>
+                                    <th title="Emerald Nightmare - Heroic Progression">EM H</th>
+                                    <th title="Emerald Nightmare - Mythic Progression">EM M</th>
+                                    <th>Last Updated</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
                 <div class="row" id="last-content">
                     <div class="col-xs-12 text-center">
                         Last Update: <span id="last-update"></span>
@@ -180,8 +201,201 @@
                 getRealmInformation();
                 getGuildInformation();
                 getLatestNews();
+                getProgressionMemberData();
                 $(".loader").hide();
             });
+
+            function getCharacterData(name, specName) {
+                var url = "https://" + region + ".api.battle.net/wow/character/" + realmName + "/" + encodeURI(name) + "?fields=items,progression&locale=en_GB&apikey=bjahzm89djw4wd4r6n8hnutmb6ygw4gn";
+                var returnData = "";
+                try {
+                    $.getJSON(url, function (data) {
+                        if (data !== undefined) {
+                            var ilvl = data.items.averageItemLevel;
+                            var aLevel = 0;
+                            if (data.items.mainHand.artifactTraits !== undefined || specName !== "Protection" || specName !== "Demonology") {
+                                for (var i = 0; i < data.items.mainHand.artifactTraits.length; i++) {
+                                    aLevel = aLevel + data.items.mainHand.artifactTraits[i].rank;
+                                }
+                                aLevel = aLevel - data.items.mainHand.relics.length;
+                            } else if (data.items.offHand.artifactTraits !== undefined) {
+                                for (var i = 0; i < data.items.offHand.artifactTraits.length; i++) {
+                                    aLevel = aLevel + data.items.offHand.artifactTraits[i].rank;
+                                }
+                                aLevel = aLevel - data.items.offHand.relics.length;
+                            }
+                            var emeraldNightmare = getBossKills(data.progression.raids[35]);
+                            var emeraldNightmareN = JSON.stringify(emeraldNightmare[0]);
+                            var emeraldNightmareH = JSON.stringify(emeraldNightmare[1])
+                            var emeraldNightmareM = JSON.stringify(emeraldNightmare[2]);
+                            var lastModified = convertTime(data.lastModified);
+                            returnData = ilvl + "|" + aLevel + "|" + lastModified + "|" + emeraldNightmareN + "|" + emeraldNightmareH + "|" + emeraldNightmareM;
+                        } else {
+                            returnData = null;
+                        }
+                    });
+                } catch (ex) {
+
+                }
+                return returnData;
+            }
+
+            function getProgressionMemberData() {
+                var url = "https://" + region + ".api.battle.net/wow/guild/" + realmName + "/" + guildName + "?fields=members&locale=en_GB&apikey=bjahzm89djw4wd4r6n8hnutmb6ygw4gn";
+                $.getJSON(url, function (data) {
+                    var dataSet = [];
+                    for (var i = 0; i < data.members.length; i++) {
+                        var name = data.members[i].character.name;
+                        var charClass = data.members[i].character.class;
+                        var specName = "";
+                        var role = "";
+                        var level = data.members[i].character.level;
+                        if (level == 110) {
+                            try {
+                                specName = data.members[i].character.spec.name;
+                                role = data.members[i].character.spec.role;
+                            } catch (ex) {
+
+                            }
+                            if (charClass == "1") {
+                                charClass = "Warrior";
+                            } else if (charClass == "2") {
+                                charClass = "Paladin";
+                            } else if (charClass == "3") {
+                                charClass = "Hunter";
+                            } else if (charClass == "4") {
+                                charClass = "Rogue";
+                            } else if (charClass == "5") {
+                                charClass = "Priest";
+                            } else if (charClass == "6") {
+                                charClass = "Death Knight";
+                            } else if (charClass == "7") {
+                                charClass = "Shaman";
+                            } else if (charClass == "8") {
+                                charClass = "Mage";
+                            } else if (charClass == "9") {
+                                charClass = "Warlock";
+                            } else if (charClass == "10") {
+                                charClass = "Monk";
+                            } else if (charClass == "11") {
+                                charClass = "Druid";
+                            } else if (charClass == "12") {
+                                charClass = "Demon Hunter";
+                            }
+                            var charData = new Array();
+                            var moreDetail = getCharacterData(name, specName);
+                            charData[0] = name;
+                            charData[1] = charClass;
+                            charData[2] = specName;
+                            charData[3] = role;
+                            if (moreDetail !== null) {
+                                moreDetail = moreDetail.split("|");
+                                charData[4] = moreDetail[0];
+                                charData[5] = moreDetail[1];
+                                charData[6] = JSON.parse(moreDetail[3]);
+                                charData[7] = JSON.parse(moreDetail[4]);
+                                charData[8] = JSON.parse(moreDetail[5]);
+                                charData[9] = moreDetail[2];
+                            }
+                            dataSet.push(charData);
+                        }
+                    }
+                    var columnsDef = [{
+                            "render": function (data, type, row, meta) {
+                                return '<a target="_blank" href="http://<?php echo $region ?>.battle.net/wow/en/character/<?php echo $realmName ?>/' + data + '/simple"" class="link" title="Armoury Link">' + data + '</a>';
+                            }
+                        },
+                        {
+                            "render": function (data, type, row, meta) {
+                                return data;
+                            }
+                        },
+                        {
+                            "render": function (data, type, row, meta) {
+                                return data;
+                            }
+                        },
+                        {
+                            "render": function (data, type, row, meta) {
+                                return data;
+                            }
+                        },
+                        {
+                            "createdCell": function (cell, cellData, rowData, rowIndex, colIndex) {
+                                var css = '';
+                                if (cellData >= 850) {
+                                    css = 'good';
+                                } else if (cellData >= 840) {
+                                    css = 'okay';
+                                } else if (cellData >= 820) {
+                                    css = 'meh';
+                                } else {
+                                    css = 'bad';
+                                }
+                                $(cell).html('<a href="#" style="display:block">' + cellData + '</a>');
+                                $(cell).addClass(css);
+                            },
+                            "render": function (data, type, row, meta) {
+                                return data;
+                            }
+                        },
+                        {
+                            "createdCell": function (cell, cellData, rowData, rowIndex, colIndex) {
+                                var css = '';
+                                if (cellData >= 20) {
+                                    css = 'good';
+                                } else if (cellData >= 17) {
+                                    css = 'okay';
+                                } else if (cellData >= 15) {
+                                    css = 'meh';
+                                } else {
+                                    css = 'bad';
+                                }
+                                $(cell).html('<a href="#" style="display:block">' + cellData + '</a>');
+                                $(cell).addClass(css);
+                            },
+                            "render": function (data, type, row, meta) {
+                                return data;
+                            }
+                        },
+                        {
+                            "createdCell": function (cell, cellData, rowData, rowIndex, colIndex) {
+                                getRaidCell(cell, cellData, "Emerald Nightmare");
+                            },
+                            "render": function (data, type, row, meta) {
+                                return data[0];
+                            }
+                        },
+                        {
+                            "createdCell": function (cell, cellData, rowData, rowIndex, colIndex) {
+                                getRaidCell(cell, cellData, "Emerald Nightmare");
+                            },
+                            "render": function (data, type, row, meta) {
+                                return data[0];
+                            }
+                        },
+                        {
+                            "createdCell": function (cell, cellData, rowData, rowIndex, colIndex) {
+                                getRaidCell(cell, cellData, "Emerald Nightmare");
+                            },
+                            "render": function (data, type, row, meta) {
+                                return data[0];
+                            }
+                        },
+                        {
+                            "render": function (data, type, row, meta) {
+                                return data;
+                            }
+                        }
+                    ];
+                    $("#member-table").DataTable({
+                        "lengthMenu": [[15, 30, 40, 50, 100, -1], [15, 30, 40, 50, 100, "All"]],
+                        data: dataSet,
+                        "columns": columnsDef,
+                        destroy: true
+                    });
+                });
+            }
 
             function getItemInformation(itemID) {
                 var url = "https://eu.api.battle.net/wow/item/" + itemID + "?locale=en_GB&apikey=bjahzm89djw4wd4r6n8hnutmb6ygw4gn";
