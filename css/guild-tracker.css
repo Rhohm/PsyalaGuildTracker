@@ -4,15 +4,22 @@ html {
 body, #page-content {
     background-color:#373737;
 }
+#page-content {
+    padding-bottom: 22px;
+}
 .page-title {
     color:white;
 }
 #last-content {
     color: white;
-    bottom: 5px;
+    bottom: 0px;
     width: 100%;
     position: fixed;
     left: 0px;
+    background-color:#373737;
+}
+.table-responsive {
+    height:131px;
 }
 
 /* KPI BOX */

@@ -137,20 +137,10 @@
                                     Latest News
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-xs-12" id="latest-news-1"></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12" id="latest-news-2"></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12" id="latest-news-3"></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12" id="latest-news-4"></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12" id="latest-news-5"></div>
+                            <div class="table-responsive">
+                                <table class="table table-condensed table-striped" id="news-table">
+                                    <tbody></tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -447,9 +437,9 @@
                         var newsCount = 1;
                         for (var i = 0; i < data.news.length; i++) {
                             var news = data.news[i];
-                            if (news.itemId != undefined && newsCount < 6) {
-                                var newsData = "<span style='font-weight:bold'>" + news.character + "</span> received " + getItemInformation(news.itemId);
-                                $("#latest-news-" + newsCount).html(newsData);
+                            if (news.itemId != undefined && newsCount < 26) {
+                                var newsData = "<tr><td><span style='font-weight:bold'>" + news.character + "</span> received " + getItemInformation(news.itemId) + "</td></tr>";
+                                $("#news-table tbody").append(newsData);
                                 newsCount++;
                             }
                         }
