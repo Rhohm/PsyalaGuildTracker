@@ -48,7 +48,7 @@
                 </div>
                 <div class="row kpi-container">
                     <!-- REALM INFO KPI START -->
-                    <div class="col-md-4 col-xs-12">
+                    <div class="col-md-6 col-xs-12">
                         <div class="kpi-box" id="realm-info">
                             <div class="row">
                                 <div class="col-xs-12 text-center h4">
@@ -89,7 +89,7 @@
                     </div>
                     <!-- REALM INFO KPI END -->
                     <!-- GUILD INFO KPI START -->
-                    <div class="col-md-4 col-xs-12">
+                    <div class="col-md-6 col-xs-12">
                         <div class="kpi-box" id="guild-info">
                             <div class="row">
                                 <div class="col-xs-12 text-center h4">
@@ -130,7 +130,7 @@
                     </div>
                     <!-- GUILD INFO KPI END -->
                     <!-- GUILD NEWS KPI START -->
-                    <div class="col-md-4 col-xs-12">
+<!--                    <div class="col-md-4 col-xs-12">
                         <div class="kpi-box" id="latest-news">
                             <div class="row">
                                 <div class="col-xs-12 text-center h4">
@@ -143,7 +143,7 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <!-- GUILD NEWS KPI END -->
                 </div>
                 <div class="row">
@@ -163,7 +163,13 @@
                                     <th>Last Updated</th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                                <tr id="get-data-container">
+                                    <td colspan="10" class="text-center">
+                                        <button class="btn btn-default" onclick="getProgressionMemberData()">Get Character Data</button>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -190,8 +196,7 @@
                 $(".loader").show();
                 getRealmInformation();
                 getGuildInformation();
-                getLatestNews();
-                getProgressionMemberData();
+                //getLatestNews();
                 $(".loader").hide();
             });
 
@@ -231,6 +236,8 @@
             }
 
             function getProgressionMemberData() {
+                $(".loader").show();
+                $("#get-data-container").remove();
                 var url = "https://" + region + ".api.battle.net/wow/guild/" + realmName + "/" + guildName + "?fields=members&locale=en_GB&apikey=bjahzm89djw4wd4r6n8hnutmb6ygw4gn";
                 $.getJSON(url, function (data) {
                     var dataSet = [];
@@ -385,6 +392,8 @@
                         destroy: true
                     });
                 });
+                
+                $(".loader").hide();
             }
 
             function getItemInformation(itemID) {
