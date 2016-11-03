@@ -164,11 +164,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr id="get-data-container">
+<!--                                <tr id="get-data-container">
                                     <td colspan="10" class="text-center">
                                         <button class="btn btn-default" onclick="getProgressionMemberData()">Get Character Data</button>
                                     </td>
-                                </tr>
+                                </tr>-->
                             </tbody>
                         </table>
                     </div>
@@ -197,6 +197,7 @@
                 getRealmInformation();
                 getGuildInformation();
                 //getLatestNews();
+                getProgressionMemberData();
                 $(".loader").hide();
             });
 
